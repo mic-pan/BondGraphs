@@ -87,7 +87,7 @@ function ModelingToolkit.ODESystem(m::BondGraph; simplify_eqs=true)
     end
 end
 
-equations(m::Model;simplify_eqs=true) = 
+ModelingToolkit.equations(m::Model;simplify_eqs=true) = 
     ModelingToolkit.equations(ODESystem(m;simplify_eqs))
 
 function simulate(m::BondGraph, tspan; u0=[], pmap=[], probtype::Symbol=:any, simplify_eqs=true,  solver=Rodas5(), kwargs...)

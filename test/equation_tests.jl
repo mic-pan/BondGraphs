@@ -67,7 +67,7 @@ end
     connect!(bg, r, c)
 
     sys = ODESystem(bg)
-    eqs = ModelingToolkit.equations(sys)
+    eqs = equations(sys)
     @test length(eqs) == 1
 
     (C,R) = sys.ps
@@ -81,11 +81,11 @@ end
 
 @testset "RLC circuit" begin
     bg = rlc()
-    eqs = BondGraphs.equations(bg)
+    eqs = equations(bg)
     @test length(eqs) == 2
 
     sys = ODESystem(bg)
-    eqs = ModelingToolkit.equations(sys)
+    eqs = equations(sys)
     (C,L,R) = sys.ps
     (qC,pL) = sys.states
     eqs_test = [
@@ -109,7 +109,7 @@ end
     connect!(bg, A, re; dstportindex=1)
     connect!(bg, re, B; srcportindex=2)
     sys = ODESystem(bg)
-    eqs = ModelingToolkit.equations(sys)
+    eqs = equations(sys)
 
     (xA,xB) = sys.states
     (KA,KB,r) = sys.ps
@@ -140,7 +140,7 @@ end
     connect!(bg,re2,C_D; srcportindex=2)
 
     sys = ODESystem(bg)
-    eqs = ModelingToolkit.equations(sys)
+    eqs = equations(sys)
 
     (xA,xB,xC,xD) = sys.states
     (KA,KB,KC,KD,r1,r2) = sys.ps
