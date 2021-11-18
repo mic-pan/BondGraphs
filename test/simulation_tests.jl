@@ -64,8 +64,6 @@ end
     end
 end
 
-# Notes: The SciMLBase package contains a getindex function for syms.
-# Within this function, sym_to_index(sym,A) will return the index of the variable.
 @testset "Extract specific variables" begin
     # Make a model of the reaction A + B ⇌ C + D
     C_A = new(:ce,:A)
@@ -100,10 +98,13 @@ end
     tspan = (t0,t1) = (0.0,10.0)
     sol = simulate(bg,tspan)
 
-    xA = sol["C:A"]
+    @test_broken xA = sol[bg_var("A")]
+    @test isequal(bg_var("A.q"), (@variables A₊q(t))[1])
+    xA = sol[bg_var("A.q")]
     @test xA[1] = 1.0
     @test xA[end] ≈ 0.75
     
     # Test that system is near equilibrium
-    @test sol("C:A";t=t1)*sol("C:B";t=t1)/sol("C:C";t=t1)/sol("C:D";t=t1) ≈ 1
+    xA,xB,xC,xD = sol(t1;idxs=bg_var(["A.q","B.q","C.q","D.q"]))
+    @test xA*xB/xC/xD ≈ 1
 end

@@ -105,3 +105,9 @@ function simulate(m::BondGraph, tspan; u0=[], pmap=[], probtype::Symbol=:any, si
     end
     return solve(prob; kwargs...)
 end
+
+function bg_var(s::AbstractString)
+    s_sym = Symbol(replace(s,"." => "₊"))
+    return (@variables $s_sym(t))[1]
+end
+bg_var(s::AbstractArray) = bg_var.(s)

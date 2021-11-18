@@ -15,7 +15,7 @@ export AbstractNode, Component, Junction, Port, Bond, BondGraph,
 EqualEffort, EqualFlow,
 vertex, set_vertex!, freeports, numports, srcnode, dstnode, 
 cr, params, state_vars, set_param!, set_initial_value!, 
-default_value, equations, simulate,
+default_value, equations, simulate, bg_var,
 new, add_node!, remove_node!, connect!, disconnect!, swap!
 
 include("basetypes.jl")
