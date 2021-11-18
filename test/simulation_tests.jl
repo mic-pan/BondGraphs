@@ -48,17 +48,17 @@ end
     f(x,a,τ) = a*exp(-x/τ)
 
     tspan = (0.0,10.0)
-    sol = simulate(bg,tspan)
+    sol = simulate(bg,tspan; reltol=1e-8)
     for t in [0.5,1.0,5.0,10.0]
         @test isapprox(sol(t)[1], f(t,10,2), atol=1e-5)
     end
 
-    sol = simulate(bg,tspan; u0=[5.0])
+    sol = simulate(bg,tspan; u0=[5.0], reltol=1e-8)
     for t in [0.5,1.0,5.0,10.0]
         @test isapprox(sol(t)[1], f(t,5,2), atol=1e-5)
     end
 
-    sol = simulate(bg,tspan; pmap=[1.0,3.0])
+    sol = simulate(bg,tspan; pmap=[1.0,3.0], reltol=1e-8)
     for t in [0.5,1.0,5.0,10.0]
         @test isapprox(sol(t)[1], f(t,10,3), atol=1e-5)
     end
@@ -98,11 +98,15 @@ end
     tspan = (t0,t1) = (0.0,10.0)
     sol = simulate(bg,tspan)
 
+    # Extract amount of A
     @test_broken xA = sol[bg_var("A")]
     @test isequal(bg_var("A.q"), (@variables A₊q(t))[1])
     xA = sol[bg_var("A.q")]
-    @test xA[1] = 1.0
+    @test xA[1] == 1.0
     @test xA[end] ≈ 0.75
+
+    # Extract reaction rate
+    @test isapprox(sol(t1; idxs=bg_var("r.p1.F")), 0, atol=1e-8)
     
     # Test that system is near equilibrium
     xA,xB,xC,xD = sol(t1;idxs=bg_var(["A.q","B.q","C.q","D.q"]))

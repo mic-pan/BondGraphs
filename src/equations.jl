@@ -90,7 +90,7 @@ end
 equations(m::Model;simplify_eqs=true) = 
     ModelingToolkit.equations(ODESystem(m;simplify_eqs))
 
-function simulate(m::BondGraph, tspan; u0=[], pmap=[], probtype::Symbol=:any, simplify_eqs=true,  kwargs...)
+function simulate(m::BondGraph, tspan; u0=[], pmap=[], probtype::Symbol=:any, simplify_eqs=true,  solver=Rodas5(), kwargs...)
 
     sys = ODESystem(m;simplify_eqs=simplify_eqs)
     if probtype == :any
@@ -103,7 +103,7 @@ function simulate(m::BondGraph, tspan; u0=[], pmap=[], probtype::Symbol=:any, si
     else
         prob = ODAEProblem(sys, u0, tspan, pmap)
     end
-    return solve(prob; kwargs...)
+    return solve(prob, solver; kwargs...)
 end
 
 function bg_var(s::AbstractString)
