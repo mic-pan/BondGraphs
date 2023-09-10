@@ -277,3 +277,21 @@ end
      @test dg_adj == bg_adj
      @test g_adj == bg_adj + bg_adj' # A + A' forms undirected graph adj matrix
 end
+
+@testset "Junction names" begin
+    bg = BondGraph()
+    e1 = EqualEffort()
+    e2 = EqualEffort(name=:e2)
+    f1 = EqualFlow()
+    f2 = EqualFlow(name=:f2)
+    add_node!(bg, [e1, e2, f1, f2])
+    @test name(e1) == "𝟎_1"
+    @test name(e2) == "e2"
+    @test name(f1) == "𝟏_3"
+    @test name(f2) == "f2"
+
+    @test bg.𝟎_1 isa EqualEffort
+    @test bg.e2 isa EqualEffort
+    @test bg.𝟏_3 isa EqualFlow
+    @test bg.f2 isa EqualFlow
+end

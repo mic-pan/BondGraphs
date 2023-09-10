@@ -107,6 +107,8 @@ type(::SourceSensor) = "SS"
 # Name
 name(n::AbstractNode) = n.name
 name(n::Junction) = vertex(n) == 0 ? n.name : "$(n.name)_$(vertex(n))"
+name(n::EqualEffort) = (vertex(n) == 0 || n.name != "𝟎") ? n.name : "$(n.name)_$(vertex(n))"
+name(n::EqualFlow) = (vertex(n) == 0 || n.name != "𝟏") ? n.name : "$(n.name)_$(vertex(n))"
 
 # Ports
 ports(n::AbstractNode) = n.ports

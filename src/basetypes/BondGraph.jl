@@ -79,7 +79,7 @@ show(io::IO, bg::BondGraph) = print(io, "BondGraph $(bg.name) ($(g.nv(bg)) Nodes
 function getproperty(bg::BondGraph, sym::Symbol)
     # Calling getfield explicitly avoids using "a.b" and causing a StackOverflowError
     allnodes = getfield(bg, :nodes)
-    names = [getfield(n, :name) for n in allnodes]
+    names = [name(n) for n in allnodes]
     symnodes = allnodes[names.==string(sym)]
     if isempty(symnodes)
         return getfield(bg, sym)
